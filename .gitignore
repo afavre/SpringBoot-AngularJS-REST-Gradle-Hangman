@@ -1,0 +1,7 @@
+# Files and directory to exclude 
+/bin
+/build
+.gradle
+.settings
+.project
+.classpath
