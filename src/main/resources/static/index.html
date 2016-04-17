@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Hangman</title>
+
+	<meta name="description" content="My Hangman">
+	<meta name="author" content="Aurélien Favre">
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body ng-app="myApp">
+	<div class="container-fluid" ng-controller="AppController">
+		<div class="row">
+			<div class="col-sm-12">
+				<nav class="navbar navbar-default" role="navigation">
+					<div class="navbar-header">
+
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+						</button> <a class="navbar-brand" href="">Hangman</a>
+					</div>
+
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li class="active">
+								<a href="" ng-click="changeView('game')">Game</a>
+							</li>
+							<li>
+								<a href="" ng-click="changeView('managment')">Managment</a>
+							</li>
+						</ul>
+					</div>
+
+				</nav>
+			</div>
+		</div>
+		<div class="row" ng-show="view =='game'">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-6">
+						<form class="form-horizontal" role="form">
+							<div class="form-group">
+
+								<label for="letter" class="col-sm-4 control-label">
+									Next letter
+								</label>
+								<div class="col-sm-2">
+									<input class="form-control" id="letter" type="text" maxlength="1" ng-model="letter">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="submit" class="btn btn-primary" ng-click="play(letter)" ng-disabled="!letter || ended">
+										Send
+									</button>
+								</div>
+							</div>
+							<div class="alert alert-danger" role="alert" ng-show="errors">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								<span class="sr-only">Error:</span> {{errors}}
+							</div>
+						</form>
+					</div>
+					<div class="col-sm-6">
+						<p><b>Word to find:  </b>
+							<span id="wordToFind" ng-show="!ended">{{currentWord}}</span>
+							<span ng-show="ended">{{word}}</span>
+						</p>
+						<br />
+						<p><b>Number of remaining attempts: </b>{{score}}</p>
+						<br />
+						<p><b>Tried letters: </b><span ng-repeat="letterUniq in lettersUsed">{{letterUniq}}, </span></p>
+						<br />
+						<div class="alert alert-success" role="alert" ng-show="successful">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<p>Success you found the word, try with an other word</p>
+						</div>
+						<div class="alert alert-danger" role="alert" ng-show="ended && !successful">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<p>Failure, try again</p>
+						</div>
+						<div class="btn-group btn-group-lg">
+							<button class="btn btn-warning" type="button" ng-click="showSolution()">
+								Show Solution
+							</button>
+							<button class="btn btn-success" type="button" ng-click="restart()">
+								<em class="glyphicon glyphicon-align-justify"></em> New Game
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="view =='managment'">
+			<div ng-repeat="game in games" class="col-sm-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h5>
+						Session <b>{{game.sessionId}}</b>
+					</h5>
+					</div>
+					<div class="panel-body">
+						<p>Word to find: <b>{{game.word}}</b></p>
+						<br>
+						<p>Word found: <b>{{game.currentWord}}</b></p>
+						<br>
+						<p>Number of remaining attempts: <b>{{game.score}}</b></p>
+						<br>
+						<p>Game over: <b>{{game.ended}}</b></p>
+						<br>
+						<p>Winner: <b>{{game.successful}}</b></p>
+					</div>
+					<div class="panel-footer">
+						<p>Letters tried: <span ng-repeat="letterUniq in game.lettersUsed">{{letterUniq}}, </span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript" src="./bower_components/angular-resource/angular-resource.min.js"></script>
+	<script type="text/javascript" src="./bower_components/angular-cookie/angular-cookie.min.js"></script>
+	<script type="text/javascript" src="./bower_components/lodash/dist/lodash.min.js"></script>
+	<script type="text/javascript" src="./app/app.js"></script>
+	<script type="text/javascript" src="./app/controllers.js"></script>
+	<script type="text/javascript" src="./app/services.js"></script>
+</body>
+
+</html>
